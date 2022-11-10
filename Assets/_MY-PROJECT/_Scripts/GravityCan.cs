@@ -7,17 +7,17 @@ public class GravityCan : MonoBehaviour
     [SerializeField]
     Rigidbody rb;
     [SerializeField]
-    float gravityIntensity;
+    float gravIntensity;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        gravityIntensity = Random.Range(8f, 16f);
+        gravIntensity = Random.Range(5f, 7.5f);
     }
 
     // Update is called once per frame
     void Update()
     {
-        rb.AddForce(-Vector3.up * gravityIntensity * .25f);
+        rb.AddForce(-Vector3.up * gravIntensity * .25f);
     }
 }
