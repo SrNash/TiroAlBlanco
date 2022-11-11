@@ -5,20 +5,19 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public Material hitMaterial, defMaterial;
-    public AudioClip shotSound, metalHitSound, emptySound, reloadSound;
-    private AudioSource gunAudioSource;
-
+    [Header("Munición")]
     [SerializeField]
     int maxAmmo, ammo;
     [SerializeField]
     TextMeshProUGUI bulletsText;
 
+    [Header("Puntuación")]
     [SerializeField]
     int score;
     [SerializeField]
     TextMeshProUGUI scoreText;
 
+    [Header("Temporizador")]
     [SerializeField]
     float timerLevel;
     [SerializeField]
@@ -33,6 +32,13 @@ public class GameManager : MonoBehaviour
     float cooldownSeconds;
     [SerializeField]
     float cooldown;
+    [Header("Recursos")]
+    private AudioSource gunAudioSource;
+    public Material hitMaterial, defMaterial;
+    public AudioClip shotSound, metalHitSound, emptySound, reloadSound;
+    
+
+
 
     void Start()
     {
@@ -139,20 +145,7 @@ public class GameManager : MonoBehaviour
             else if (hitInfo.collider.tag.Equals("Diana"))
             {
                 gunAudioSource.PlayOneShot(metalHitSound);
-                Transform scaleDiana = hitInfo.collider.GetComponent<Transform>();
-                Checker checkerDiana = hitInfo.collider.GetComponent<Checker>();
-                //Agrandamos
-                if(!checkerDiana.hitted)
-                {
-                    scaleDiana.localScale = new Vector3(scaleDiana.localScale.x * 1.125f, scaleDiana.localScale.y * 1.125f, scaleDiana.localScale.z);
-                    hitInfo.collider.GetComponent<MeshRenderer>().material = hitMaterial;
-                    checkerDiana.hitted = true;
-                }else if(checkerDiana.hitted)
-                {
-                    scaleDiana.localScale = new Vector3(scaleDiana.localScale.x / 1.125f, scaleDiana.localScale.y / 1.125f, scaleDiana.localScale.z);
-                    hitInfo.collider.GetComponent<MeshRenderer>().material = defMaterial;
-                    checkerDiana.hitted = false;
-                }
+                hitInfo.collider.GetComponent<LT_Animations>().HittedDiana();
                 score += 10;
             }
             else

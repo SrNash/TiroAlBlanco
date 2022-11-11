@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2243038680673763555}
   - component: {fileID: 2922559487192223558}
   - component: {fileID: 1111249015050779532}
-  - component: {fileID: 1777345938004125454}
+  - component: {fileID: 4137536167297855467}
   - component: {fileID: 3292048282860514505}
   m_Layer: 0
   m_Name: diana
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1471286639827688025}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.10319, y: 1.75, z: 0.024752}
-  m_LocalScale: {x: 100, y: 100, z: 7}
+  m_LocalScale: {x: 1, y: 1, z: 0.07}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -63,8 +63,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3846018093981099296, guid: 4b27d70ea62256c40b17806f1836f2cf, type: 3}
-  - {fileID: 4874126678125670354, guid: 4b27d70ea62256c40b17806f1836f2cf, type: 3}
+  - {fileID: 2100000, guid: 021e2dcbe0696014cb5cb4783d91ec7c, type: 2}
+  - {fileID: 2100000, guid: 021e2dcbe0696014cb5cb4783d91ec7c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &1777345938004125454
+--- !u!114 &4137536167297855467
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -95,10 +95,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1471286639827688025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93ff35e03370d214f81527b6ceb5af23, type: 3}
+  m_Script: {fileID: 11500000, guid: 63ec1d6ef30dd10418f6153a3097d078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitted: 0
+  diana: {fileID: 0}
+  timeScaleUp: 0.5
+  timeScaleDown: 1
+  timeColorChange: 0.5
+  scaleUp: {x: 2, y: 2, z: 0.07}
+  scaleDown: {x: 1, y: 1, z: 0.07}
+  defColor: {r: 0.93725497, g: 0.9607844, b: 0.96470594, a: 0}
+  hitColor: {r: 0.6431373, g: 0.03137255, b: 0.03137255, a: 0}
+  clicked: 0
 --- !u!65 &3292048282860514505
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -110,5 +118,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.018296951, y: 0.018296951, z: 0.026570791}
-  m_Center: {x: -6.226861e-17, y: -9.68593e-17, z: -0.0034079337}
+  m_Size: {x: 2, y: 2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
