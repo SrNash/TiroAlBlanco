@@ -27,21 +27,26 @@ public class SelectedObject : MonoBehaviour
     {
         isSelected = false;
         go = this.gameObject;
-        scaleUp = new Vector3(1.75f, 1.75f, 1.75f);
+        scaleUp = go.transform.localScale * 1.5f;
         scaleDown = transform.localScale;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(isSelected)
+        SelectedAnimation();
+    }
+
+    void SelectedAnimation()
+    {
+        if (isSelected)
         {
             go.LeanColor(selectedColor, .05f);
-            LeanTween.scale(go,scaleUp, .125f);
+            LeanTween.scale(go, scaleUp, .125f);
         }
         else
         {
-            go.LeanColor(defColor, .05f);
+            //go.LeanColor(defColor, .05f);
             LeanTween.scale(go, scaleDown, .125f);
         }
     }
