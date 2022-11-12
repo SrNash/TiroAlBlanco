@@ -31,25 +31,16 @@ public class SelectedObject : MonoBehaviour
         scaleDown = transform.localScale;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SelectedItem()
     {
-        SelectedAnimation();
+        go.LeanColor(selectedColor, .05f);
+        go.GetComponent<BoxCollider>().size = scaleUp;
+        LeanTween.scale(go, scaleUp, .125f);
     }
-
-    void SelectedAnimation()
+    public void DeselectedItem()
     {
-        if (isSelected)
-        {
-            go.LeanColor(selectedColor, .05f);
-            go.GetComponent<BoxCollider>().size = scaleUp;
-            LeanTween.scale(go, scaleUp, .125f);
-        }
-        else
-        {
-            go.LeanColor(defColor, .05f);
-            go.GetComponent<BoxCollider>().size = scaleDown;
-            LeanTween.scale(go, scaleDown, .125f);
-        }
+        go.LeanColor(defColor, .05f);
+        go.GetComponent<BoxCollider>().size = scaleDown;
+        LeanTween.scale(go, scaleDown, .125f);
     }
 }

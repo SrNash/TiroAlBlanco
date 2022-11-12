@@ -7,13 +7,8 @@ public class DragAndDrop : MonoBehaviour
     bool isDrag;
     [SerializeField]
     Transform selectedTransform;
-    [SerializeField]
-    GameObject goSelected;
 
-    [Header("Rayo")]
-    [SerializeField]
     Ray ray;
-    [SerializeField]
     RaycastHit hitInfo;
 
     [Header("Localización y Desplazamiento")]
@@ -22,7 +17,7 @@ public class DragAndDrop : MonoBehaviour
     [SerializeField]
     Vector3 offsetMousePointer;
     [SerializeField]
-    float mZCoord;
+    float mZCoord;  //variable para ajustar el item seleccionado en el eje Z
 
     [Header("Camara")]
     Camera cam;
@@ -37,7 +32,7 @@ public class DragAndDrop : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {    
         DragnDrop();
     }
 
@@ -49,21 +44,19 @@ public class DragAndDrop : MonoBehaviour
 
             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
             {
-               if(hitInfo.collider.tag == "Pickable")
+                if (hitInfo.collider.tag == "Pickable")
                 {
                     selectedTransform = hitInfo.collider.transform;    //asignaremos el transform del objeto con el que impacta el rayo
-                    goSelected = hitInfo.collider.gameObject;
 
                     selectedObject = selectedTransform.GetComponent<SelectedObject>();
-                    print("Click " + selectedTransform.name);
 
                     screenPos = cam.WorldToScreenPoint(selectedTransform.position); //registramos la posicion del objeto
-                    selectedObject.GetComponent<MeshRenderer>().enabled = false;
-                    offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z));  //offset de la posicion en la que estamos respecto a la que queremos desplazar el objeto, para mantenerlo centrado
-                    selectedObject.GetComponent<MeshRenderer>().enabled = true;
-
-                     //offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord ));
                     
+                    print(Input.mousePosition.y);
+                    selectedObject.GetComponent<Collider>().enabled = false;
+                    offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z));  //offset de la posicion en la que estamos respecto a la que queremos desplazar el objeto, para mantenerlo centrado
+                    selectedObject.GetComponent<Collider>().enabled = true;
+
                     isDrag = true;  //está clicado
                 }
             }
@@ -71,22 +64,31 @@ public class DragAndDrop : MonoBehaviour
         else if (Input.GetMouseButtonUp(0) && isDrag == true)   //dejamos de desplazar/arrastras el objeto
         {
             isDrag = false; //NO está clicado
+
+            //Item Deseleccionado
             selectedObject.isSelected = false;
+            selectedObject.DeselectedItem();
+
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
         }
         else if (isDrag)    //desplazaremos el objeto mientras que está clicado
         {
-            selectedObject.GetComponent<MeshRenderer>().enabled = true;
+            selectedObject.GetComponent<Collider>().enabled = false;
+            
+            //Item Seleccionado
             selectedObject.isSelected = true;
+            selectedObject.SelectedItem();
+            
             Cursor.visible = false;
 
             Vector3 currentScreenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z);
-            Vector3 currentPos = Camera.main.ScreenToWorldPoint(currentScreenPos) + offsetMousePointer; //donde queremos que esté el objeto
+            Vector3 currentPos = cam.ScreenToWorldPoint(currentScreenPos) + offsetMousePointer; //donde queremos que esté el objeto
+            selectedObject.GetComponent<Collider>().enabled = true;
 
             selectedTransform.position = currentPos;   //desplazamos el objeto
-            
-            //selectedObject.GetComponent<Rigidbody>().AddForce(new Vector3(0f, 0f, screenPos.z * 2.5f), ForceMode.Impulse);
         }
+
+
     }
 }
