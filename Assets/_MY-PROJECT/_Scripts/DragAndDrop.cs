@@ -21,6 +21,8 @@ public class DragAndDrop : MonoBehaviour
     Vector3 screenPos;
     [SerializeField]
     Vector3 offsetMousePointer;
+    [SerializeField]
+    float mZCoord;
 
     [Header("Camara")]
     Camera cam;
@@ -60,10 +62,8 @@ public class DragAndDrop : MonoBehaviour
                     offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z));  //offset de la posicion en la que estamos respecto a la que queremos desplazar el objeto, para mantenerlo centrado
                     selectedObject.GetComponent<MeshRenderer>().enabled = true;
 
-                    /* float mZCoord;
-                     mZCoord = hitInfo.point.z;
-                     offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, (mZCoord / screenPos.z) * Time.deltaTime ));
-                    */
+                     //offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, mZCoord ));
+                    
                     isDrag = true;  //está clicado
                 }
             }
@@ -80,12 +80,13 @@ public class DragAndDrop : MonoBehaviour
             selectedObject.GetComponent<MeshRenderer>().enabled = true;
             selectedObject.isSelected = true;
             Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
 
-            Vector3 currentScreenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z);  //
+            Vector3 currentScreenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z);
             Vector3 currentPos = Camera.main.ScreenToWorldPoint(currentScreenPos) + offsetMousePointer; //donde queremos que esté el objeto
 
             selectedTransform.position = currentPos;   //desplazamos el objeto
+            
+            //selectedObject.GetComponent<Rigidbody>().AddForce(new Vector3(0f, 0f, screenPos.z * 2.5f), ForceMode.Impulse);
         }
     }
 }
