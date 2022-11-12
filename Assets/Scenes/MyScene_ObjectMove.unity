@@ -173,8 +173,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 65
+  far clip plane: 250
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -199,14 +199,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 66567494}
-  m_LocalRotation: {x: 0.12392742, y: -0, z: -0, w: 0.9922913}
-  m_LocalPosition: {x: 0, y: 6.4, z: -14.3}
+  m_LocalRotation: {x: -0.05695204, y: -0, z: -0, w: 0.99837697}
+  m_LocalPosition: {x: 0, y: 5.3, z: -15.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 14.238, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -6.53, y: 0, z: 0}
 --- !u!1001 &88047749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3626,7 +3626,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDrag: 0
   selectedTransform: {fileID: 0}
-  goSelected: {fileID: 0}
   screenPos: {x: 0, y: 0, z: 0}
   offsetMousePointer: {x: 0, y: 0, z: 0}
   mZCoord: 0
@@ -3657,11 +3656,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c0006c8ce3f6342992b4cfeb6e6085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isDragging: 0
-  selectedItem: {fileID: 0}
-  screenPosition: {x: 0, y: 0, z: 0}
-  offset: {x: 0, y: 0, z: 0}
-  cam: {fileID: 0}
 --- !u!1001 &1740959646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4207,7 +4201,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1855433734}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 104.6}
   m_LocalScale: {x: 981.14996, y: 0.02, z: 981.14996}
   m_ConstrainProportionsScale: 0
   m_Children: []

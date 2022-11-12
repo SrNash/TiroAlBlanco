@@ -44,19 +44,18 @@ public class DragAndDrop : MonoBehaviour
 
             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
             {
-                if (hitInfo.collider.tag == "Pickable")
+                if (hitInfo.collider.CompareTag("Pickable"))
                 {
                     selectedTransform = hitInfo.collider.transform;    //asignaremos el transform del objeto con el que impacta el rayo
 
                     selectedObject = selectedTransform.GetComponent<SelectedObject>();
 
-                    screenPos = cam.WorldToScreenPoint(selectedTransform.position); //registramos la posicion del objeto
-                    
-                    print(Input.mousePosition.y);
-                    selectedObject.GetComponent<Collider>().enabled = false;
-                    offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z));  //offset de la posicion en la que estamos respecto a la que queremos desplazar el objeto, para mantenerlo centrado
-                    selectedObject.GetComponent<Collider>().enabled = true;
+                    screenPos = cam.WorldToScreenPoint(selectedTransform.position); //registramos la posicion del objeto en la pantalla
 
+                    print(screenPos.z);
+                    //offset de la posicion en la que estamos respecto a la que queremos desplazar el objeto, para mantenerlo centrado
+                    offsetMousePointer = selectedTransform.position - cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z));  
+                    
                     isDrag = true;  //está clicado
                 }
             }
@@ -66,7 +65,6 @@ public class DragAndDrop : MonoBehaviour
             isDrag = false; //NO está clicado
 
             //Item Deseleccionado
-            selectedObject.isSelected = false;
             selectedObject.DeselectedItem();
 
             Cursor.visible = true;
@@ -77,10 +75,10 @@ public class DragAndDrop : MonoBehaviour
             selectedObject.GetComponent<Collider>().enabled = false;
             
             //Item Seleccionado
-            selectedObject.isSelected = true;
             selectedObject.SelectedItem();
             
             Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
 
             Vector3 currentScreenPos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPos.z);
             Vector3 currentPos = cam.ScreenToWorldPoint(currentScreenPos) + offsetMousePointer; //donde queremos que esté el objeto
