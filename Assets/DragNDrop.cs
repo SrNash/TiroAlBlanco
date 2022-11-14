@@ -61,11 +61,9 @@ public class DragNDrop : MonoBehaviour
                    
                     if (selectedGO != null || selectedTransform != null)
                     {
-                        Ray ray_2 = cam.ScreenPointToRay(Input.mousePosition);
-
                         if (isClicked)
                         {
-                            if (Physics.Raycast(ray_2.origin, ray_2.direction, out hitInfo, Mathf.Infinity))
+                            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
                             {
                                 mOffset = new Vector3(0f, selectedTransform.position.y, -.75f);
                                 //Variable Temporal que registra la posicion actual del objeto seleccionado 

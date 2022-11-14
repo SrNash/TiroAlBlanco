@@ -1,0 +1,63 @@
+if (Input.GetMouseButtonDown(0))
+        {
+            //Registramos el origen del Rayo
+            ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
+            {
+                if (hitInfo.collider.CompareTag("Pickable"))
+                {
+                    //Registramos el objeto clickeado.
+                    selectedTransform = hitInfo.collider.transform;    
+                    selectedObject = selectedTransform.GetComponent<SelectedObject>();
+
+                    //Desactivamos el GameObject
+                    selectedTransform.gameObject.SetActive(false);
+                    isDrag = true;  //está clicado
+
+
+                    //Registramos la Pos del Puntero en el mundo
+                    screenPos = cam.WorldToScreenPoint(selectedTransform.position);
+                    
+                    //Coordenadas en X,Y
+                    mousePointer = Input.mousePosition;
+                    mousePointer.z = selectedTransform.position.z;
+
+                    //offset de la posicion en la que estamos respecto a la que queremos desplazar el objeto, para mantenerlo centrado
+                    mOffset = selectedTransform.position - cam.ScreenToWorldPoint(mousePointer);  
+                    
+                    
+                }
+            }
+        }
+        else if (Input.GetMouseButtonUp(0) && isDrag)
+        {
+            isDrag = false; //NO está clicado
+
+            //Item Deseleccionado
+            selectedObject.DeselectedItem();
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else if (isDrag)
+        {
+            if(Physics.Raycast(ray.origin, ray.direction, out hitInfo))
+            {
+                //Activamos el GameObject
+                selectedTransform.gameObject.SetActive(true);
+
+                //Item Seleccionado
+                selectedObject.SelectedItem();
+
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Confined;
+
+                mousePointer = selectedTransform.position - hitInfo.point;
+
+                Vector3 currentPos = cam.ScreenToWorldPoint(mousePointer) + mOffset; //donde queremos que esté el objeto
+                selectedObject.GetComponent<Collider>().enabled = true;
+
+                selectedTransform.position = currentPos;   //desplazamos el objeto
+            }
+        }
+    }

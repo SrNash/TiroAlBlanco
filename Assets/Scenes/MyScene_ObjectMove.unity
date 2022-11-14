@@ -4550,13 +4550,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733822017}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a92a3c1adbc4064c9033468e24f30b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isDrag: 0
   selectedTransform: {fileID: 0}
+  selectedGO: {fileID: 0}
+  selectedRb: {fileID: 0}
   mousePointer: {x: 0, y: 0, z: 0}
   screenPos: {x: 0, y: 0, z: 0}
   mOffset: {x: 0, y: 0, z: 0}
@@ -4583,7 +4585,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1733822017}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55c0006c8ce3f6342992b4cfeb6e6085, type: 3}
   m_Name: 
