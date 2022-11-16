@@ -36,11 +36,51 @@ public class DragNDrop : MonoBehaviour
     void Update()
     {
         Clicking();
+        //
+        /*if (Input.GetMouseButton(0))
+        {
+            //Indicamos desde donde lanzaremos el rayo
+            ray = cam.ScreenPointToRay(Input.mousePosition);
 
-        
+            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
+            {
+                if (hitInfo.collider.CompareTag("Pickable"))
+                {
+                    //Registraremos tanto la Transform como El GameObject con el 
+                    selectedTransform = hitInfo.collider.GetComponent<Transform>();
+                    selectedGO = hitInfo.collider.gameObject;
+
+                    //Desactivamos el objeto
+                    selectedGO.SetActive(false);
+                    isClicked = true;
+
+                    if (selectedGO != null || selectedTransform != null)
+                    {
+                        if (isClicked)
+                        {
+                            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
+                            {
+                                mOffset = new Vector3(0f, selectedTransform.position.y, -.75f);
+                                //Variable Temporal que registra la posicion actual del objeto seleccionado 
+                                //y le suma un offset
+                                var tmpPos = mOffset;
+                                Cursor.visible = false;
+                                //Activamos el objeto
+                                selectedGO.SetActive(true);
+
+                                //Desplazaremos el objeto
+                                selectedTransform.position = hitInfo.point + tmpPos;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        { Cursor.visible = true; }*/
     }
 
-    void Clicking()
+   void Clicking()
     {
         if (Input.GetMouseButton(0))
         {
@@ -65,7 +105,7 @@ public class DragNDrop : MonoBehaviour
                         {
                             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
                             {
-                                mOffset = new Vector3(0f, selectedTransform.position.y, -.75f);
+                                mOffset = new Vector3(0f, selectedTransform.localScale.y / 2f, -.75f);
                                 //Variable Temporal que registra la posicion actual del objeto seleccionado 
                                 //y le suma un offset
                                 var tmpPos = mOffset;
@@ -80,8 +120,6 @@ public class DragNDrop : MonoBehaviour
                     }
                 }
             }
-            /*else
-            { Cursor.visible = true; }*/
         }
         else
         { Cursor.visible = true; }
