@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SelectedObject : MonoBehaviour
 {
+    [Header("Localización")]
+    public Vector3 initPos;
     [Header("GameObject")]
     [SerializeField]
     GameObject go;
@@ -25,6 +27,8 @@ public class SelectedObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        initPos = this.GetComponent<Transform>().position;
+
         isSelected = false;
         go = this.gameObject;
         scaleUp = new Vector3(1.5f,1.5f,1.5f);

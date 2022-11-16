@@ -36,48 +36,6 @@ public class DragNDrop : MonoBehaviour
     void Update()
     {
         Clicking();
-        //
-        /*if (Input.GetMouseButton(0))
-        {
-            //Indicamos desde donde lanzaremos el rayo
-            ray = cam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
-            {
-                if (hitInfo.collider.CompareTag("Pickable"))
-                {
-                    //Registraremos tanto la Transform como El GameObject con el 
-                    selectedTransform = hitInfo.collider.GetComponent<Transform>();
-                    selectedGO = hitInfo.collider.gameObject;
-
-                    //Desactivamos el objeto
-                    selectedGO.SetActive(false);
-                    isClicked = true;
-
-                    if (selectedGO != null || selectedTransform != null)
-                    {
-                        if (isClicked)
-                        {
-                            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
-                            {
-                                mOffset = new Vector3(0f, selectedTransform.position.y, -.75f);
-                                //Variable Temporal que registra la posicion actual del objeto seleccionado 
-                                //y le suma un offset
-                                var tmpPos = mOffset;
-                                Cursor.visible = false;
-                                //Activamos el objeto
-                                selectedGO.SetActive(true);
-
-                                //Desplazaremos el objeto
-                                selectedTransform.position = hitInfo.point + tmpPos;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        else
-        { Cursor.visible = true; }*/
     }
 
    void Clicking()
@@ -93,6 +51,11 @@ public class DragNDrop : MonoBehaviour
                 {
                     //Registraremos tanto la Transform como El GameObject con el 
                     selectedTransform = hitInfo.collider.GetComponent<Transform>();
+                    selection = hitInfo.collider.GetComponent<SelectedObject>();
+
+                    //Prueba guardar Posición inicial
+                    ResetPos(selectedTransform);
+
                     selectedGO = hitInfo.collider.gameObject;
 
                     //Desactivamos el objeto
@@ -103,18 +66,42 @@ public class DragNDrop : MonoBehaviour
                     {
                         if (isClicked)
                         {
-                            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo, Mathf.Infinity))
+                            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
                             {
-                                mOffset = new Vector3(0f, selectedTransform.localScale.y / 2f, -.75f);
+                                mOffset = new Vector3(0f, selectedTransform.localScale.y / 2f, -.25f);
                                 //Variable Temporal que registra la posicion actual del objeto seleccionado 
                                 //y le suma un offset
                                 var tmpPos = mOffset;
-                                Cursor.visible = false;
+                                //Cursor.visible = false;
                                 //Activamos el objeto
                                 selectedGO.SetActive(true);
 
                                 //Desplazaremos el objeto
                                 selectedTransform.position = hitInfo.point + tmpPos;
+
+                                if(selectedTransform.position.y < .5f)
+                                    selectedTransform.position = selection.initPos;
+                            }
+                            else
+                            {
+                                selectedGO.SetActive(true);
+
+                                if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
+                                {
+                                    mOffset = new Vector3(0f, selectedTransform.localScale.y / 2f, -.25f);
+                                    
+                                    //Variable Temporal que registra la posicion actual del objeto seleccionado 
+                                    //y le suma un offset
+                                    var tmpPos = mOffset;
+
+                                    //Cursor.visible = false;
+
+                                    //Activamos el objeto
+                                    selectedGO.SetActive(true);
+
+                                    //Desplazaremos el objeto
+                                    selectedTransform.position = new Vector3(selection.initPos.x, selectedTransform.localScale.y / 2f, selection.initPos.z);
+                                }
                             }
                         }
                     }
@@ -125,5 +112,10 @@ public class DragNDrop : MonoBehaviour
         { Cursor.visible = true; }
     }
 
-    
+    Vector3 ResetPos(Transform tr)
+    {
+        Vector3 initPos = tr.position;
+
+        return initPos;
+    }
 }
