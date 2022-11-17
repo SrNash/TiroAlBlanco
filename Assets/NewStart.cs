@@ -8,6 +8,17 @@ public class NewStart : MonoBehaviour
     [SerializeField]
     GameObject selectedGO;
 
+    [SerializeField]
+    Camera cam;
+
+    [Header("Booleans de Comprobación")]
+    [SerializeField]
+    bool isDraged;
+    [SerializeField]
+    bool isRotated;
+    [SerializeField]
+    bool isScaled;
+
     public enum SelectorState
     {
         Waiting,
@@ -22,7 +33,6 @@ public class NewStart : MonoBehaviour
     [SerializeField]
     SelectorState currentState = SelectorState.Waiting;
 
-    Camera cam;
 
     private void Start()
     {
@@ -34,9 +44,9 @@ public class NewStart : MonoBehaviour
     {
         switch(currentState)
         {
-            case SelectorState.Waiting:
-                ResetDef();
-                break;
+            /*case SelectorState.Waiting:
+                
+                break;*/
             case SelectorState.SelectObjectDrag:
                 SelectObject();
                 break;
@@ -47,13 +57,17 @@ public class NewStart : MonoBehaviour
                 DeselectObject();
                 break;
             case SelectorState.Rotator:
-                RotatedObject();
+                RotatorObject(selectedGO);
                 break;
             case SelectorState.Scaled:
-                ScaleUp();
+                ScaleUp(selectedGO);
                 break;
         }
     }
+
+    /// <summary>
+    /// Funciones
+    /// </summary>
 
     public void SelectObject()
     {
@@ -69,33 +83,40 @@ public class NewStart : MonoBehaviour
                 if (hit.collider.CompareTag("Pickable"))
                 {   
                     selectedGO = hit.collider.gameObject;
-                    currentState = SelectorState.Dragin;
+                    //currentState = SelectorState.Dragin;
 
-                    switch(currentState)
+                    if (isDraged)
+                        currentState = SelectorState.Dragin;
+                    else if (isScaled)
+                        currentState = SelectorState.Scaled;
+                    else if (isRotated)
+                        currentState = SelectorState.Rotator;
+
+
+                    switch (currentState)
                     {
-                        case SelectorState.Waiting:
+                        /*case SelectorState.Waiting:
                             ResetDef();
-                            break;
+                            break;*/
                         case SelectorState.Dragin:
                             break;
                         case SelectorState.Rotator:
-                            RotatedObject();
+                            RotatorObject(selectedGO);
                             break;
                         case SelectorState.Scaled:
-                            ScaleUp();
+                            ScaleUp(selectedGO);
                             break;
                     }
+                    
                 }
             }
         }
     }
-
     public void DeselectObject()
     {
         selectedGO = null;
         currentState = SelectorState.Waiting;
     }
-
     public void DragObject()
     {
         Ray ray;
@@ -108,7 +129,6 @@ public class NewStart : MonoBehaviour
         {
             selectedGO.SetActive(true);
             selectedGO.transform.position = hit.point + new Vector3(0f, Vector3.up.y * (altura() / 2f), 0f);
-            //selectedGO.transform.position = hit.point + ((Vector3.up * selectedGO.transform.localScale.y) / 2f);
         }
 
         selectedGO.SetActive(true);
@@ -117,34 +137,57 @@ public class NewStart : MonoBehaviour
         {
             currentState = SelectorState.Droped;
         }
+        isDraged = false;
     }
+    void ScaleUp(GameObject goToScale)
+    {
+        GameObject go;
+        go = goToScale;
+        Vector3 scaleUp = new Vector3(Input.mouseScrollDelta.y, Input.mouseScrollDelta.y, Input.mouseScrollDelta.y);
+        go.transform.localScale += scaleUp;
+
+        var vChecker = 1f; ;
+
+        if (go.transform.localScale.y <= vChecker)
+            go.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        isScaled = false;
+        //selectedGO.transform.localScale += scaleUp;
+    }
+
+    void RotatorObject(GameObject goToRotate)
+    {
+        GameObject go;
+        go = goToRotate;
+        Vector3 rot = new Vector3(0f, Input.GetAxis("Mouse X"), 0f);
+        go.transform.Rotate(rot);
+
+        isRotated = false;
+    }
+  
+    /// <summary>
+    /// Control de ESTADOS
+    /// </summary>
 
     public void MovedObject()
     {
+        isDraged = true;
         currentState = SelectorState.SelectObjectDrag;
     }
     public void RotatedObject()
     {
-        currentState = SelectorState.Rotator;
-        SelectObject();
+        isRotated = true;
+        currentState = SelectorState.SelectObjectDrag;
     }
     public void ScaledObject()
     {
-        currentState = SelectorState.Scaled;
-        SelectObject();
+        isScaled = true;
+        currentState = SelectorState.SelectObjectDrag;
     }
 
-    void ScaleUp()
-    {
-        Vector3 scaleUp = Input.mouseScrollDelta;
-        selectedGO.transform.localScale += scaleUp;
-    }
-
-    void ResetDef()
-    {
-        Vector3 scaleDef = new Vector3(1f, 1f, 1f);
-        //selectedGO.transform.localScale = scaleDef;
-    }
+    /// <summary>
+    /// Float de la altura del collider
+    /// </summary>
 
     float altura()
     {
