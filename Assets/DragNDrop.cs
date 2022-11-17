@@ -40,7 +40,7 @@ public class DragNDrop : MonoBehaviour
 
    void Clicking()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.touchCount >= 1 && Input.GetTouch(0).phase == TouchPhase.Ended || Input.GetMouseButton(0))
         {
             //Indicamos desde donde lanzaremos el rayo
             ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -68,7 +68,10 @@ public class DragNDrop : MonoBehaviour
                         {
                             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
                             {
-                                mOffset = new Vector3(0f, selectedTransform.localScale.y / 2f, -.25f);
+                                selection.SelectedItem();
+                                //mOffset = new Vector3(0f, Vector3.up.y * selectedTransform.localScale.y / 2f, -.25f);
+                                mOffset = new Vector3(0f, Vector3.up.y * selection.scaleUp.y / 2f, -.50f);
+
                                 //Variable Temporal que registra la posicion actual del objeto seleccionado 
                                 //y le suma un offset
                                 var tmpPos = mOffset;
@@ -88,7 +91,8 @@ public class DragNDrop : MonoBehaviour
 
                                 if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
                                 {
-                                    mOffset = new Vector3(0f, selectedTransform.localScale.y / 2f, -.25f);
+                                    //mOffset = new Vector3(0f,Vector3.up.y *  selectedTransform.localScale.y / 2f, -.25f);
+                                    mOffset = new Vector3(0f,Vector3.up.y * selection.scaleUp.y / 2f, -.50f);
                                     
                                     //Variable Temporal que registra la posicion actual del objeto seleccionado 
                                     //y le suma un offset
@@ -100,7 +104,8 @@ public class DragNDrop : MonoBehaviour
                                     selectedGO.SetActive(true);
 
                                     //Desplazaremos el objeto
-                                    selectedTransform.position = new Vector3(selection.initPos.x, selectedTransform.localScale.y / 2f, selection.initPos.z);
+                                    //selectedTransform.position = new Vector3(selection.initPos.x, Vector3.up.y * selectedTransform.localScale.y / 2f, selection.initPos.z);
+                                    selectedTransform.position = new Vector3(selection.initPos.x, Vector3.up.y * selection.scaleUp.y / 2f, selection.initPos.z);
                                 }
                             }
                         }
@@ -109,7 +114,10 @@ public class DragNDrop : MonoBehaviour
             }
         }
         else
-        { Cursor.visible = true; }
+        {
+            Cursor.visible = true;
+            selection.DeselectedItem();
+        }
     }
 
     Vector3 ResetPos(Transform tr)

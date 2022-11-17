@@ -14,10 +14,8 @@ public class SelectedObject : MonoBehaviour
     public bool isSelected = false;
 
     [Header("Tamaños")]
-    [SerializeField]
-    Vector3 scaleUp;
-    [SerializeField]
-    Vector3 scaleDown;
+    public Vector3 scaleUp;
+    public Vector3 scaleDown;
     [Header("Colores")]
     [SerializeField]
     Color defColor;
