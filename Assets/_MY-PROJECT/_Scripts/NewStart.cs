@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class NewStart : MonoBehaviour
 {
@@ -18,16 +19,26 @@ public class NewStart : MonoBehaviour
     bool isRotated;
     [SerializeField]
     bool isScaled;
+    [SerializeField]
+    bool isCreated;
+
+    [Header("UI")]
+    [SerializeField]
+    Canvas manMenu;
+    [SerializeField]
+    Canvas createMenu;
 
     public enum SelectorState
     {
         Waiting,
+        WaitingDrag,
         SelectObjectDrag,
         SelectObjectRotate,
         Dragin,
         Droped,
         Scaled,
-        Rotator
+        Rotator,
+        Create
     }
 
     [SerializeField]
@@ -50,6 +61,9 @@ public class NewStart : MonoBehaviour
             case SelectorState.SelectObjectDrag:
                 SelectObject();
                 break;
+            case SelectorState.WaitingDrag:
+                currentState = SelectorState.Dragin;
+                break;
             case SelectorState.Dragin:
                 DragObject();
                 break;
@@ -61,6 +75,9 @@ public class NewStart : MonoBehaviour
                 break;
             case SelectorState.Scaled:
                 ScaleUp(selectedGO);
+                break;
+            case SelectorState.Create:
+                OpenCreateOptions();
                 break;
         }
     }
@@ -91,6 +108,8 @@ public class NewStart : MonoBehaviour
                         currentState = SelectorState.Scaled;
                     else if (isRotated)
                         currentState = SelectorState.Rotator;
+                    else if (isCreated)
+                        currentState = SelectorState.Create;
 
 
                     switch (currentState)
@@ -146,6 +165,7 @@ public class NewStart : MonoBehaviour
         Vector3 scaleUp = new Vector3(Input.mouseScrollDelta.y, Input.mouseScrollDelta.y, Input.mouseScrollDelta.y);
         go.transform.localScale += scaleUp;
 
+        //Comprobar que la escala minima sea 1
         var vChecker = 1f; ;
 
         if (go.transform.localScale.y <= vChecker)
@@ -159,12 +179,53 @@ public class NewStart : MonoBehaviour
     {
         GameObject go;
         go = goToRotate;
-        Vector3 rot = new Vector3(0f, Input.GetAxis("Mouse X"), 0f);
+        Vector3 rot = new Vector3(Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"), 0f);
         go.transform.Rotate(rot);
 
         isRotated = false;
     }
   
+    void OpenCreateOptions()
+    {
+        createMenu.gameObject.SetActive(true);
+    }
+    public void CancelCreation()
+    {
+        createMenu.gameObject.SetActive(false);
+        currentState = SelectorState.Waiting;
+    }
+
+    //Funcion de creacion de objeto dependiendo al boton que pulsemos
+    public void CreateObject(GameObject prefab)
+    {
+        Vector3 initPos = new Vector3(0f,.5048f, 0f);
+        selectedGO = Instantiate(prefab, Vector3.zero + initPos, Quaternion.identity);
+        currentState = SelectorState.WaitingDrag;
+
+    }
+    //Funciones dependiendo del tipo de objeto que queremos crear
+    public void CreateCube()
+    {
+        //GameObject cube = Instantiate(prefCube, Vector3.zero, Quaternion.identity);
+        //selectedGO = cube;
+
+        currentState = SelectorState.WaitingDrag;
+        
+    }
+    public void CreateSphere()
+    {
+        //GameObject sphere = Instantiate(prefCube, Vector3.zero, Quaternion.identity);
+        //selectedGO = sphere;
+
+        currentState = SelectorState.WaitingDrag;
+    }
+    public void CreateCylinder()
+    {
+        //GameObject cylinder = Instantiate(prefCube, Vector3.zero, Quaternion.identity);
+        //selectedGO = cylinder;
+
+        currentState = SelectorState.WaitingDrag;
+    }
     /// <summary>
     /// Control de ESTADOS
     /// </summary>
@@ -184,6 +245,11 @@ public class NewStart : MonoBehaviour
         isScaled = true;
         currentState = SelectorState.SelectObjectDrag;
     }
+    public void CreatePrimitive()
+    {
+        isCreated = true;
+        currentState = SelectorState.Create;
+    }
 
     /// <summary>
     /// Float de la altura del collider
@@ -196,17 +262,17 @@ public class NewStart : MonoBehaviour
         SphereCollider sphereCol;
         CapsuleCollider capsuleCol;
 
-        if (selectedGO.name == "CubeDrag")
+        if (selectedGO.name.Contains("CubeDrag"))
         {
             boxCol = selectedGO.GetComponent<BoxCollider>();
             h = boxCol.size.y;
         }
-        else if (selectedGO.name == "SphereDrag")
+        else if (selectedGO.name.Contains("SphereDrag"))
         {
             sphereCol = selectedGO.GetComponent<SphereCollider>();
             h = sphereCol.radius;
         }
-        else if (selectedGO.name == "CylinderDrag")
+        else if (selectedGO.name.Contains("CylinderDrag"))
         {
             capsuleCol = selectedGO.GetComponent<CapsuleCollider>();
             h = capsuleCol.height;
