@@ -199,7 +199,17 @@ public class NewStart : MonoBehaviour
     public void CreateObject(GameObject prefab)
     {
         Vector3 initPos = new Vector3(0f,.5048f, 0f);
+        Color colorPref = new Color();
+        colorPref.r = Random.Range(0f, 255f);
+        colorPref.g = Random.Range(0f, 255f);
+        colorPref.b = Random.Range(0f, 255f);
+        colorPref.a = 255f;
+
         selectedGO = Instantiate(prefab, Vector3.zero + initPos, Quaternion.identity);
+        Renderer meshR = selectedGO.GetComponent<Renderer>();
+        meshR.material.SetColor("_Color", colorPref);
+        
+
         currentState = SelectorState.WaitingDrag;
 
     }
